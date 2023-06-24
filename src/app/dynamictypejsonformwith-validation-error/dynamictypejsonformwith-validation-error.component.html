@@ -1,0 +1,20 @@
+<form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+    <div *ngFor="let control of formStructure">
+      <label>{{ control.label }}</label>
+      <div [ngSwitch]="control.type">
+        <input *ngSwitchCase="'input'" type="text" [formControlName]="control.name" />
+        <select *ngSwitchCase="'select'" [formControlName]="control.name">
+          <option *ngFor="let option of control.options" [value]="option">{{ option }}</option>
+        </select>
+        <!-- Add more form control types as needed -->
+      </div>
+      <div *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">
+        <div *ngFor="let validation of control.validations">
+          <div *ngIf="dynamicForm.get(control.name)?.hasError(validation.type)">
+            {{ validation.message }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" [disabled]="dynamicForm.invalid">Submit</button>
+  </form>
