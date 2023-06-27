@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 
@@ -45,9 +45,14 @@ export class DynamictypejsonformComponent implements OnInit {
   dynamicFormData:any[] = [];
   formFields: any[] = []; // Array to hold the parsed JSON data
   checkedValue:any;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private renderer:Renderer2, private el: ElementRef) {}
   
   ngOnInit(): void {
+    const div = this.renderer.createElement('div');
+    const text = this.renderer.createText('Hello world!');
+
+    this.renderer.appendChild(div, text);
+    this.renderer.appendChild(this.el.nativeElement, div);
     // Parse your JSON data and extract necessary information
     const jsonData = `
       [
@@ -55,18 +60,22 @@ export class DynamictypejsonformComponent implements OnInit {
           "type": "text", 
           "name": "lastname", 
           "inputType": "text", 
-          "label": "Last Name" 
+          "label": "Last Name",
+          "value":"Chakraborty",
+          "isDisable": true
         },
         { 
           "type": "textarea", 
           "name": "description", 
-          "label": "Put Your Sample Description" 
+          "label": "Put Your Sample Description",
+          "value" : "" 
         },
         { 
           "type": "select", 
           "name": "category", 
           "label": "Describe the Category", 
           "Default": "Please Select from Option...",
+          "value" : "",
           "options": [
             { "label": "Option 1", "value": "option1" },
             { "label": "Option 2", "value": "option2" },
@@ -78,13 +87,16 @@ export class DynamictypejsonformComponent implements OnInit {
         "name": "Gender",
         "checked": "false",
         "inputType": "checkbox", 
-        "label": "Remember the Position" 
+        "label": "Remember the Position",
+        "value" : ""
         },
         { 
           "type": "text", 
           "name": "firstname", 
           "inputType": "text", 
-          "label": "First Name" 
+          "label": "First Name",
+          "value":"Partha",
+          "isDisable": true 
         }
       ]
     `;
@@ -98,6 +110,9 @@ export class DynamictypejsonformComponent implements OnInit {
       if(field.type === "checkbox"){
         field.isChecked = JSON.parse(field.checked);
         formGroupConfig[field.name] = new FormControl(field.isChecked, Validators.requiredTrue);
+      }
+      if(field.value !=""){
+        formGroupConfig[field.name] = new FormControl(field.value);
       }
     });
     console.log("this.formFields#####",this.formFields);
@@ -119,7 +134,12 @@ export class DynamictypejsonformComponent implements OnInit {
       if (field.type === 'checkbox') {
         const initialValue = field.checked || false; // Set initial checked state
         this.dynamicForm3.addControl(field.name, new FormControl(initialValue, Validators.requiredTrue));
-      } else {
+      } 
+      else if(field.type === "email"){
+          validators.push(Validators.email);
+          this.dynamicForm3.addControl(field.name, this.formBuilder.control('', validators));
+      }
+      else {
         this.dynamicForm3.addControl(field.name, this.formBuilder.control('', validators));
       }
     }

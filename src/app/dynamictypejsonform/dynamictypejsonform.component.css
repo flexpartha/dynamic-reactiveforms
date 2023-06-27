@@ -1,3 +1,8 @@
 .form-control{
     border: 1px solid #d4d4d4 !important;
 }
+
+.inputTxet{
+    pointer-events: none !important;
+    background: #bebbbb8a !important;
+}

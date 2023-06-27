@@ -5,7 +5,7 @@
           <ng-container [ngSwitch]="field.type">
             <div class="mb-3" *ngSwitchCase="'text'">
               <label *ngSwitchCase="'text'" class="form-label" for="inputText">{{field.label}}</label>
-              <input *ngSwitchCase="'text'" class="form-control" [type]="field.inputType" [formControlName]="field.name">
+              <input *ngSwitchCase="'text'" class="form-control inputTxet" [readonly]="field.isDisable" [type]="field.inputType" [formControlName]="field.name">
             </div>
             <div class="mb-3" *ngSwitchCase="'textarea'">
               <label *ngSwitchCase="'textarea'" class="form-label" for="inputTextarea">{{field.label}}</label>
@@ -53,11 +53,14 @@
         </ng-container>
     
         <!-- Display error message if field is invalid -->
-        <!-- <div *ngIf="dynamicForm.get(field.name)?.invalid && dynamicForm.get(field.name).touched">
-          <div *ngIf="dynamicForm.get(field.name)?.errors?.required">
+        <div *ngIf="dynamicForm3.get(field.name)?.invalid && dynamicForm3.get(field.name)?.touched">
+          <div *ngIf="dynamicForm3.get(field.name)?.errors?.['required']">
             {{ field.label }} is required.
           </div>
-        </div> -->
+          <div *ngIf="dynamicForm3.get(field.name)?.errors?.['email']">
+            {{ field.label }} is invalid.
+          </div>
+        </div>
       </div>
     
       <button type="submit">Submit</button>

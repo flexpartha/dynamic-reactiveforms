@@ -1,0 +1,10 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngFor="let data of dynamicFormData">
+      <label>{{ data.name }}</label>
+      <input type="text" [formControlName]="data.id.toString()">
+      <div *ngIf="form.get(data.id.toString())?.invalid && form.get(data.id.toString())?.touched" class="error">
+        This field is required.
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+</form>
