@@ -6,3 +6,7 @@
     pointer-events: none !important;
     background: #bebbbb8a !important;
 }
+
+.border-color{
+    border: red 1px solid;
+}

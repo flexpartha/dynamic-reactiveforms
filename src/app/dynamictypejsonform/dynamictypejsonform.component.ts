@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { isNumericOnly } from '../shared/custom.validators';
 
 
 const dynamicFormData = `
@@ -27,6 +28,12 @@ const dynamicFormData = `
     "name": "email",
     "label": "Email",
     "type": "email",
+    "required": true
+  },
+  {
+    "name": "Phone",
+    "label": "Phone Number",
+    "type": "text",
     "required": true
   }
 ]
@@ -138,6 +145,10 @@ export class DynamictypejsonformComponent implements OnInit {
       else if(field.type === "email"){
           validators.push(Validators.email);
           this.dynamicForm3.addControl(field.name, this.formBuilder.control('', validators));
+      }
+      else if(field.name === "Phone"){
+        validators.push(isNumericOnly);
+        this.dynamicForm3.addControl(field.name, this.formBuilder.control('', validators))
       }
       else {
         this.dynamicForm3.addControl(field.name, this.formBuilder.control('', validators));
