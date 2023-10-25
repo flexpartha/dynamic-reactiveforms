@@ -53,15 +53,17 @@
           [formControlName]="field.name" [checked]="field.checked">
         </ng-container>
     
-        <!-- Display error message if field is invalid -->
-        <div *ngIf="dynamicForm3.get(field.name)?.invalid && dynamicForm3.get(field.name)?.touched">
-          <div *ngIf="dynamicForm3.get(field.name)?.errors?.['required']">
+        <!-- Display error message if field is touched and invalid -->
+        <div *ngIf="dynamicForm3.get(field.name)?.invalid && (isSubmitted || dynamicForm3.get(field.name)?.touched)"> 
+          <!-- <div *ngIf="dynamicForm3.get(field.name)?.invalid && isSubmitted"> this line should be happend 
+            when fileld invalid and submitted -->
+          <div class="alert alert-danger" role="alert" *ngIf="dynamicForm3.get(field.name)?.errors?.['required']">
             {{ field.label }} is required.
           </div>
           <div *ngIf="dynamicForm3.get(field.name)?.errors?.['email']">
             {{ field.label }} is invalid.
           </div>
-          <div *ngIf="dynamicForm3.get(field.name)?.errors?.['isValidated']">
+          <div class="alert alert-danger" role="alert" *ngIf="dynamicForm3.get(field.name)?.errors?.['isValidated']">
             {{ field.label }} should be Numeric.
           </div>
         </div>

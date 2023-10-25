@@ -3,14 +3,14 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { isNumericOnly } from '../shared/custom.validators';
 
 
-const dynamicFormData = `
+const dynamicJsonData = `
 [
   {
     "name": "subscribe",
     "label": "Subscribe to Newsletter",
     "type": "checkbox",
     "required": false,
-    "checked": false
+    "checked": true
   },
   {
     "name": "firstName",
@@ -52,6 +52,7 @@ export class DynamictypejsonformComponent implements OnInit {
   dynamicFormData:any[] = [];
   formFields: any[] = []; // Array to hold the parsed JSON data
   checkedValue:any;
+  isSubmitted = false;
   constructor(private formBuilder: FormBuilder, private renderer:Renderer2, private el: ElementRef) {}
   
   ngOnInit(): void {
@@ -132,7 +133,7 @@ export class DynamictypejsonformComponent implements OnInit {
 
 
     this.dynamicForm3 = this.formBuilder.group({});
-    this.dynamicFormData = JSON.parse(dynamicFormData); // Assuming you have the dynamic JSON data available
+    this.dynamicFormData = JSON.parse(dynamicJsonData); // Assuming you have the dynamic JSON data available
 
     // Loop through the dynamic form data and create form controls dynamically
     for (const field of this.dynamicFormData) {
@@ -173,6 +174,7 @@ export class DynamictypejsonformComponent implements OnInit {
   }
 
   onSubmit3() {
+    this.isSubmitted = true;
     if (this.dynamicForm3.valid) {
       // Form is valid, do your submission logic here
       console.log(this.dynamicForm3.value);
